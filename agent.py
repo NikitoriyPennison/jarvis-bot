@@ -56,4 +56,3 @@ class JarvisAgent:
         if not items:
             return "Данные недоступны"
         return "\n".join([f"{i}. {item.get('title','N/A')} | Цена: {item.get('price','N/A')} | Отзывов: {item.get('reviews',0)}" for i, item in enumerate(items[:20], 1)])
-```
