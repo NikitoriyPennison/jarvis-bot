@@ -1,4 +1,0 @@
-[phases.install] 
-cmds = ["pip install -r jarvis_bot/requirements.txt"] 
-[start] 
-cmd = "python jarvis_bot/bot.py" 
