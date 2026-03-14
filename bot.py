@@ -31,16 +31,18 @@ scraper = MarketScraper(config)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
-        "🤖 *Jarvis — AI-советник по 3D-печати*\n\n"
-        "Отслеживаю MakerWorld и Etsy, нахожу модели с высоким потенциалом продаж\\.\n\n"
-        "*Команды:*\n"
+        "🤖 Jarvis — AI-советник по 3D-печати\n\n"
+        "Отслеживаю MakerWorld и Etsy, нахожу модели с высоким потенциалом продаж.\n\n"
+        "Команды:\n"
         "/analyze — анализ рынка прямо сейчас\n"
-        "/top — топ\\-10 рекомендаций\n"
-        "/niche \\[запрос\\] — анализ конкретной ниши\n"
-        "/schedule — расписание авто\\-отчётов\n\n"
-        "Или просто напиши вопрос\\!"
+        "/top — топ-10 рекомендаций\n"
+        "/niche [запрос] — анализ конкретной ниши\n"
+        "/schedule — расписание авто-отчётов\n\n"
+        "Или просто напиши вопрос!"
     )
-    await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+    await update.message.reply_text(text)
+```
+
 
 
 async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
