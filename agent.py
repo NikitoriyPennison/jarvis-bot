@@ -1,5 +1,5 @@
 
-pythonimport google.genai as genai
+import google.genai as genai
 from typing import List, Dict, Any
 from config import Config
 
@@ -54,3 +54,4 @@ class JarvisAgent:
  return "\n".join([f"{i}. {item.get('title','N/A')} | Цена: {item.get('price','N/A')} | Отзывов: {item.get('reviews',0)}" for i, item in enumerate(items[:20], 1)])
 
     
+
