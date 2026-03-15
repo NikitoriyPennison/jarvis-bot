@@ -14,9 +14,11 @@ config = Config()
 agent = JarvisAgent(config)
 scraper = MarketScraper(config)
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "Jarvis - AI-советник по 3D-печати\n\nКоманды:\n/analyze - анализ рынка\n/top - топ-10 рекомендаций\n/niche [запрос] - анализ ниши\n/schedule - расписание отчётов\n\nИли просто напиши вопрос!"
     await update.message.reply_text(text)
+
 
 async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("Запускаю анализ рынка... ~30-60 секунд.")
@@ -27,6 +29,7 @@ async def analyze_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await msg.edit_text(f"Ошибка: {e}")
 
+
 async def top_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("Формирую топ рекомендаций...")
     try:
@@ -35,6 +38,7 @@ async def top_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await msg.edit_text(report, parse_mode=ParseMode.MARKDOWN)
     except Exception as e:
         await msg.edit_text(f"Ошибка: {e}")
+
 
 async def niche_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = " ".join(context.args) if context.args else ""
@@ -49,8 +53,10 @@ async def niche_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await msg.edit_text(f"Ошибка: {e}")
 
+
 async def schedule_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"Авто-отчёты каждые {config.AUTO_ANALYZE_HOURS} ч.")
+
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
@@ -67,6 +73,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await msg.edit_text(f"Ошибка: {e}")
 
+
 async def auto_report_job(context: ContextTypes.DEFAULT_TYPE):
     chat_id = config.TELEGRAM_CHAT_ID
     if not chat_id:
@@ -81,6 +88,7 @@ async def auto_report_job(context: ContextTypes.DEFAULT_TYPE):
         except Exception:
             pass
 
+
 async def post_init(app: Application):
     await app.bot.set_my_commands([
         BotCommand("start", "Запустить бота"),
@@ -91,11 +99,12 @@ async def post_init(app: Application):
     ])
     app.job_queue.run_repeating(auto_report_job, interval=config.AUTO_ANALYZE_HOURS * 3600, first=60, name="auto_report")
 
+
 def main():
     if not config.TELEGRAM_TOKEN:
         raise ValueError("TELEGRAM_TOKEN не задан!")
-    if not config.ANTHROPIC_API_KEY:
-        raise ValueError("ANTHROPIC_API_KEY не задан!")
+    if not config.GEMINI_API_KEY:
+        raise ValueError("GEMINI_API_KEY не задан!")
     app = Application.builder().token(config.TELEGRAM_TOKEN).post_init(post_init).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", start))
@@ -106,6 +115,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     logger.info("Jarvis запущен!")
     app.run_polling(drop_pending_updates=True)
+
 
 if __name__ == "__main__":
     main()
